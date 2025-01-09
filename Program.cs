@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
+using System.Security.Cryptography;
 
 namespace test_proj
 {
@@ -272,21 +273,159 @@ namespace test_proj
             }
         }
 
+        static int CountVowelLetters(string value, string vowels = "aeiouy") {
+            // Количество гласных букв в слове
+            int count = 0;
+            for (int i = 0; i < vowels.Length; i++) {
+                count+=CharCountInWord(word: value, symbol: vowels[i]);
+            }
 
+            return count;
+        }
+
+        static string ReplaceSymbolInWord(string value, char symbol, char replacer) {
+            // Заменяет символ в слове
+            string result = "";
+            for (int i = 0; i < value.Length; i++) {
+                if (value[i] != symbol) {
+                    result+=value[i];
+                }
+                else {
+                    result+=replacer;
+                }
+            }
+            return result;
+        }
+
+        static string ArtozeDecoder(string value) {
+            // Декодирует шифр в троичную последовательность
+            string result = "";
+            string word = value;
+            while (word.Length != 0) {
+                if (word.Length == 1) {
+                    result += "0";
+                    break;
+                }
+                if (word[0..2] == "--") {
+                    result += "2";
+                    word = word[2..];
+                } else if (word[0..2] == "-."){
+                    result += "1";
+                    word = word[2..];
+                } else {
+                    result += "0";
+                    word = word[1..];
+                }
+            }
+
+            return result;
+        }
+
+        static string RuToEngReplace(string value) {
+            // Замена на английскую раскладку
+            string result = "";
+            string ru =  " йцукенгшщзхъфывапролджэячсмитьбюЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ\"№;:?.,";
+            string eng = " qwertyuiop[]asdfghjkl;\'zxcvbnm,.QWERTYUIOP{}ASDFGHJKL:\"ZXCVBNM<>@#$^&/?";
+            char symbol = ' ';
+
+            for (int i = 0; i < value.Length; i++) {
+                int position = -1;
+                for (int j=0; j< ru.Length; j++) {
+                    if (value[i] == ru[j]) {
+                        position = j;
+                    }
+                }
+                if (position != -1) {
+                    result += eng[position];
+                } else {
+                    result += value[i];
+                }
+            }
+
+            return result;
+        }
+
+        static string CezarCypher(string value, int shift) {
+            //Учебная реализация шифра Цезаря
+            string abc = "АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ";
+
+            string doubleABC = abc + abc;
+            string result = "";
+            int realShift = shift % abc.Length;
+            int oldPos = 999;
+            int newPos = 999;
+            for (int i = 0; i < value.Length; i++) {
+                
+                for (int j=0; j< abc.Length; j++) {
+                    if (abc[j] == value[i]) {
+                        oldPos = j + realShift;
+                        break;
+                    }
+                }
+                result += doubleABC[oldPos];
+
+            }            
+
+            return result;
+        }
+
+        static int GetBullCount(int trueNumber, int askNumber) {
+            // Возвращает количество "быков" (Игра "Быки и коровы")
+            int bullCount = 0;
+            string trueNumberString = Convert.ToString(trueNumber);
+            string askNumberString = Convert.ToString(askNumber);
+
+            for (int i = 0; i <= trueNumberString.Length; i++) {
+                if (trueNumberString[i] == askNumberString[i]) {
+                    bullCount++;
+                }
+            }
+            return bullCount;
+        }
+
+        static int GetCowCount(int trueNumber, int askNumber) {
+            // Возвращает количество "коров" (Игра "Быки и коровы")
+            int cowCount = 0;
+            string trueNumberString = Convert.ToString(trueNumber);
+            string askNumberString = Convert.ToString(askNumber);
+
+            for (int i = 0; i <= trueNumberString.Length; i++) {
+                for (int j = 0; j <= trueNumberString.Length; j++) {
+                    if (i != j) {
+                        if (trueNumberString[i] == askNumberString[j]) {
+                            cowCount++;
+                        }
+                    }
+                }
+            }
+            return cowCount;
+        }
+
+        static void BullCowGame(int trueNumber, int askNumber) {
+            int bullCount = GetBullCount(trueNumber, askNumber);
+            int cowCount = GetCowCount(trueNumber, askNumber);
+            int gameSize = Convert.ToString(trueNumber).Length;
+
+            if (bullCount == gameSize) {
+                Console.WriteLine("Четыре быка! Ты выиграл!"); // по-хорошему, сюда нужен маппинг "цифра-русское написание цифры"
+            } else if (cowCount == gameSize) {
+                Console.WriteLine("Четыре коровы. Правильно расставьте цифры");
+            } else {
+                Console.WriteLine($"Быки-{bullCount}, коровы-{cowCount}");
+            }
+        }
 
         static void Main(string[] args)
         {   
             // int cycleMin = Convert.ToInt32(Console.ReadLine());
             // int magicNumber = 7;
+            // string inputString = Console.ReadLine();
             string inputString = Console.ReadLine();
             int num = Convert.ToInt32(Console.ReadLine());
-            string res = "NO";
-            if (inputString.Length >= num) {
-                res = Convert.ToString(inputString[num - 1]);
-            }
-            Console.WriteLine(res);
-            // string inputString = Console.ReadLine();
-  
+            
+            
+            Console.WriteLine(CezarCypher(inputString, num));
+            
         }
             
     }
