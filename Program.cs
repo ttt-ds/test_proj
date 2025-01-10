@@ -369,13 +369,13 @@ namespace test_proj
             return result;
         }
 
-        static int GetBullCount(int trueNumber, int askNumber) {
+        static int GetBullCount(string trueNumber, string askNumber) {
             // Возвращает количество "быков" (Игра "Быки и коровы")
             int bullCount = 0;
-            string trueNumberString = Convert.ToString(trueNumber);
-            string askNumberString = Convert.ToString(askNumber);
+            string trueNumberString = trueNumber;
+            string askNumberString = askNumber;
 
-            for (int i = 0; i <= trueNumberString.Length; i++) {
+            for (int i = 0; i < trueNumberString.Length; i++) {
                 if (trueNumberString[i] == askNumberString[i]) {
                     bullCount++;
                 }
@@ -383,14 +383,14 @@ namespace test_proj
             return bullCount;
         }
 
-        static int GetCowCount(int trueNumber, int askNumber) {
+        static int GetCowCount(string trueNumber, string askNumber) {
             // Возвращает количество "коров" (Игра "Быки и коровы")
             int cowCount = 0;
-            string trueNumberString = Convert.ToString(trueNumber);
-            string askNumberString = Convert.ToString(askNumber);
+            string trueNumberString = trueNumber;
+            string askNumberString = askNumber;
 
-            for (int i = 0; i <= trueNumberString.Length; i++) {
-                for (int j = 0; j <= trueNumberString.Length; j++) {
+            for (int i = 0; i < trueNumberString.Length; i++) {
+                for (int j = 0; j < trueNumberString.Length; j++) {
                     if (i != j) {
                         if (trueNumberString[i] == askNumberString[j]) {
                             cowCount++;
@@ -401,7 +401,7 @@ namespace test_proj
             return cowCount;
         }
 
-        static void BullCowGame(int trueNumber, int askNumber) {
+        static void BullCowGame(string trueNumber, string askNumber) {
             int bullCount = GetBullCount(trueNumber, askNumber);
             int cowCount = GetCowCount(trueNumber, askNumber);
             int gameSize = Convert.ToString(trueNumber).Length;
@@ -415,17 +415,254 @@ namespace test_proj
             }
         }
 
+        static int[] OneDimArrayInput(char delimeter = ' ') {
+            // Считывание цифр, написанных через delimeter в 1 строку.
+            string inputString = Console.ReadLine();
+            string[] arrayWords = inputString.Split(' '); 
+            
+            int[] numbers = new int[arrayWords.Length];
+            for (int i=0; i < arrayWords.Length; i++) {
+                numbers[i] = Convert.ToInt32(arrayWords[i]);
+            }
+
+            return numbers;
+        }
+
+        static int[] ReverseIntArray(int[] value) {
+            // Возвращает перевернутый массив чисел
+            int[] result = new int[value.Length];
+
+            int newIndex = 0;
+            for (int i=value.Length-1; i>=0; i--) {
+                result[newIndex] = value[i];
+                newIndex++;
+            }
+
+            return result;
+        }
+
+        static bool IsDuplicationsInNumArray(int[] value) {
+            // Проверяет, есть ли повторы элементов в массиве
+            bool result = false;
+            for (int i=0; i < value.Length; i++)  {
+                for (int j=0; j < value.Length; j++) {
+                    if (i!=j) {
+                        if (value[i]==value[j]) {
+                            result=true;
+                            return result;
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+
+        static int[] GetNumArrayUniques(int[] value) {
+            // Получение уникальных элементов массива
+            string tmpResult = "";
+
+            for (int i=0; i<value.Length; i++) {
+                bool isUnique = true;
+                for (int j=0; j < value.Length; j++) {
+                    if (i!=j) {
+                        if (value[i]==value[j]) {
+                            isUnique=false;
+                            break;
+                        }
+                    }
+                }
+                if (isUnique) {
+                    tmpResult += $"{value[i]}|";
+                }
+            }
+            // parse result string 
+            if (tmpResult != "") {
+                tmpResult = tmpResult[..(tmpResult.Length - 1)];
+            
+                string[] arrayWords = tmpResult.Split('|'); 
+                
+                int[] numbers = new int[arrayWords.Length];
+                for (int i=0; i < arrayWords.Length; i++) {
+                    numbers[i] = Convert.ToInt32(arrayWords[i]);
+                }
+                return numbers;
+            } else {
+                return new int[0];
+            }
+        }
+
+        static int[,] TwoDimZeroOneTwoArray (int n) {
+            /*
+            Возвращает массив вида:
+            0 0 1
+            0 1 2
+            1 2 2
+            */
+            int[,] result = new int[n,n];
+            for (int i=0; i<n; i++) {
+               for (int j=0; j<n; j++) {
+                if (i < n- 1 - j) {
+                    result[i, j] = 0;
+                } else if (i > n - 1 -j ) {
+                    result[i, j] = 2;
+                } else {
+                    result[i, j] = 1;
+                }
+               }
+            }
+
+            return result;
+        }
+        static void TwoDimPrint(int[,] value) {
+            // Выводит двумерный массив в лог
+            for (int i = 0; i < value.GetLength(0); i++)
+            {
+                for (int j = 0; j < value.GetLength(1); j++)
+                {
+                    Console.Write(value[i, j] + " ");
+                }
+                Console.WriteLine(); // перевод на новую строку
+                }
+
+        }
+
+        static int[,] IntTwoDimArrayInput (int n, int m) {
+            // Считывание двумерного массива целых чисел
+            int[,] result = new int[n,m];
+            for (int i=0; i<n; i++) {
+                string[] inputString = Console.ReadLine().Split(' ');
+                for (int j=0; j<m; j++) {
+                    result[i,j] = Convert.ToInt32(inputString[j]);
+                }
+            }
+
+            return result;
+        }
+
+        static bool IsSymmetricalTwoDimArray(int[,] value) {
+            /*
+            Проверка двумерного массива на соответствие виду:
+            1 2 3
+            2 8 6
+            3 6 9
+            */
+
+            for (int i = 0; i < value.GetLength(0); i++)
+            {
+                for (int j = 0; j < value.GetLength(1); j++) {
+                    if (value[i,j] != value[j,i]) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        static int[,] PifagorTwoDimArray(int n, int m) {
+            // Функция построения таблицы Пифагора по заданной размерности
+            int[,] result = new int[n,m];
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < m; j++) {
+                    result[i,j] = (i+1) * (j+1);
+                }
+            }
+
+            return result;
+        }
+
+        static (int, int) GetArraySize() {
+            // Получение двух чисел (например, размеров массива), записанных в 1 строку через пробел
+            string[] inputString = Console.ReadLine().Split(' ');
+            int n = Convert.ToInt32(inputString[0]);
+            int m = Convert.ToInt32(inputString[1]);
+            return (n, m);
+        }
+
+        static int[,] PascalTriangle(int n, int m) {
+            // Функция рассчета матрицы с треугольником Паскаля: элемент равен сумме двух элементов, стоящих слева и сверху от него.
+            int[,] result = new int[n,m];
+            for (int i=0; i<n; i++) {
+                result[i, 0] = 1;
+            }
+            for (int i=0; i<m; i++) {
+                result[0, i] = 1;
+            }
+            for (int i = 1; i < n; i++)
+            {
+                for (int j = 1; j < m; j++) {
+                    result[i,j] = result[i-1, j] + result[i, j-1];
+                }
+            }
+            return result;
+        }
+
+        static (int, int) GetLineNumWithMaxSum(int[,] value) {
+            // Получение номера строки с максимальной суммой элементов и максимальной суммы элементов в ней.
+            int lineNum = -99999;
+            int maxSum = -999999;
+            for (int i=0;i<value.GetLength(0); i++) {
+                int actSum = 0;
+                for (int j = 0; j < value.GetLength(1); j++) {
+                    actSum+=value[i,j];
+                }
+                if (actSum > maxSum) {
+                    maxSum = actSum;
+                    lineNum = i;
+                }
+            }
+
+            return (lineNum, maxSum);
+        }
+
+        static int[] GetArrayFromString(string inputString, char delimeter = ' ', bool delimInLineEnd = true) {
+            // Разделяет строку на числовой массив
+            int[] result = new int[0];
+            if (inputString != ""){
+                string tmpResult = inputString;
+
+                if (delimInLineEnd) {
+                    tmpResult = tmpResult[..(tmpResult.Length - 1)];
+                }
+                    
+                string[] arrayWords = tmpResult.Split(delimeter); 
+                
+                int[] numbers = new int[arrayWords.Length];
+                for (int i=0; i < arrayWords.Length; i++) {
+                    numbers[i] = Convert.ToInt32(arrayWords[i]);
+                }
+                return numbers;
+            }
+
+            return result;
+        }
+
+        
+        static int[] GetAllDivisionableNumsInArray(int[] value, int divisioner = 2) {
+            // Возвращает все числа в массиве, делящиеся на divisioner
+            string tmpResult = "";
+
+            for (int i=0; i<value.Length; i++) {
+                if (value[i] % divisioner == 0) {
+                    tmpResult += $"{value[i]}|";
+                }
+            }
+            int[] result = GetArrayFromString(tmpResult, delimeter: '|', delimInLineEnd: true);
+            return result;
+        }
+
         static void Main(string[] args)
         {   
             // int cycleMin = Convert.ToInt32(Console.ReadLine());
             // int magicNumber = 7;
             // string inputString = Console.ReadLine();
-            string inputString = Console.ReadLine();
-            int num = Convert.ToInt32(Console.ReadLine());
-            
-            
-            Console.WriteLine(CezarCypher(inputString, num));
-            
+            int arraySize = Convert.ToInt32(Console.ReadLine());
+            int[] numEvenArray = GetAllDivisionableNumsInArray(OneDimArrayInput(), divisioner: 2);
+            Console.WriteLine(string.Join(" ", numEvenArray));
+            Console.WriteLine(numEvenArray.Length);
+            // int[] numbers = ReadIntArrayLine();
+            // Console.Write(string.Join(" ", GetNumArrayUniques(numbers)));
+
         }
             
     }
