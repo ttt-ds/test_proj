@@ -457,7 +457,7 @@ namespace test_proj
             return result;
         }
 
-        static int[] GetNumArrayUniques(int[] value) {
+        static int[] GetCountNumArrayUniques(int[] value) {
             // Получение уникальных элементов массива
             string tmpResult = "";
 
@@ -651,16 +651,91 @@ namespace test_proj
             return result;
         }
 
+        static int[] GetNumUniques(int[] value) {
+            // Возвращает все уникальные значения массива
+            string tmpResult = "";
+            for (int i=0; i<value.Length; i++) {
+                bool isUnique = true;
+                for (int j=0; j<value.Length; j++) {
+                    if (i!=j) {
+                        if (value[i] == value[j]) {
+                            isUnique = false;
+                        }
+                    }
+                }
+                if (isUnique) {
+                    tmpResult += $"{value[i]}|";
+                } else {
+                    int[] tmpArray = GetArrayFromString(tmpResult, delimeter: '|', delimInLineEnd: true);
+                    bool alreadyInArray = false;
+                    for (int r=0; r<tmpArray.Length; r++) {
+                        if (value[i]==tmpArray[r]) {
+                            alreadyInArray = true;
+                            break;
+                        }
+                    }
+                    if (!alreadyInArray) {
+                        tmpResult += $"{value[i]}|";
+                    }
+                }
+            }
+
+
+            return GetArrayFromString(tmpResult, delimeter: '|', delimInLineEnd: true);
+        }
+
+        static int GetPositionInSortedArray(int value, int[] sortedArray) {
+            // Возвращает позицию, на которой нужно расположить новый элемент в массиве, отсортированном по невозрастанию
+            int result = sortedArray.Length;
+
+            for (int i=0; i< sortedArray.Length; i++) {
+                    if (value > sortedArray[i]) {
+                        result = i;
+                        // Console.WriteLine(i);
+                        break;
+                    }
+            }
+            return result;  
+        }
+
+        static int[] GetIndexesZeroPair(int[] value) {
+            // Возвращает индексы элементов, которые "зануляются" при сложении
+            string tmpResult = "";
+            for (int i=0; i<value.Length; i++) {
+                for (int j=i; j<value.Length; j++) {
+                    if (j!=i) {
+                        if (value[i] != 0 && value[i]+value[j] == 0) {
+                            tmpResult += $"{i} {j}";
+                        }
+                    }
+                }
+            }
+
+
+            return GetArrayFromString(tmpResult, delimeter: '|', delimInLineEnd: true);
+        }
+
+        static int MinimalRoadSize(int [] value, int height) {
+            // Реализация идиотизма из https://stepik.org/lesson/87060/step/7?unit=63457
+            int result = value.Length;
+            for (int i=0; i<value.Length; i++) {
+                if (value[i] > height) {
+                    result++;
+                }
+            }
+
+            return result;
+        }
+
         static void Main(string[] args)
         {   
             // int cycleMin = Convert.ToInt32(Console.ReadLine());
             // int magicNumber = 7;
             // string inputString = Console.ReadLine();
-            int arraySize = Convert.ToInt32(Console.ReadLine());
-            int[] numEvenArray = GetAllDivisionableNumsInArray(OneDimArrayInput(), divisioner: 2);
-            Console.WriteLine(string.Join(" ", numEvenArray));
-            Console.WriteLine(numEvenArray.Length);
-            // int[] numbers = ReadIntArrayLine();
+            int height = Convert.ToInt32(Console.ReadLine().Split(' ')[1]);
+            // int arraySize = Convert.ToInt32(Console.ReadLine());
+            int[] numArray = OneDimArrayInput();
+            Console.Write(MinimalRoadSize(numArray, height));
             // Console.Write(string.Join(" ", GetNumArrayUniques(numbers)));
 
         }
