@@ -539,6 +539,19 @@ namespace test_proj
             return result;
         }
 
+        static char[,] CharTwoDimArrayInput (int n, int m) {
+            // Считывание двумерного массива символов
+            char[,] result = new char[n,m];
+            for (int i=0; i<n; i++) {
+                string[] inputString = Console.ReadLine().Split(' ');
+                for (int j=0; j<m; j++) {
+                    result[i,j] = Convert.ToChar(inputString[j]);
+                }
+            }
+
+            return result;
+        }
+
         static bool IsSymmetricalTwoDimArray(int[,] value) {
             /*
             Проверка двумерного массива на соответствие виду:
@@ -727,15 +740,101 @@ namespace test_proj
             return result;
         }
 
+        static bool IsPhotoBlackAndWhite(char[,] value) {
+            // Реализация проверки на цветные пиксели из https://stepik.org/lesson/87060/step/8?unit=63457
+            bool isBlackNWhite = true;
+
+            for (int i = 0; i<value.GetLength(0); i++) {
+                for (int j = 0; j < value.GetLength(1); j++) {
+                    // Console.WriteLine($"{value[i,j]}");
+                    if ((value[i,j] != 'W') && (value[i,j] != 'B') && (value[i,j] != 'G')) {
+                        return false;
+                    }
+                    
+                }
+            }
+            return isBlackNWhite;
+        }
+
+        static int TransformHoursMinsToMinutes(string value) {
+            // 10:15 -> 615 минут
+            int result = Convert.ToInt32(value.Split(':')[0]) * 60 + Convert.ToInt32(value.Split(':')[1]);
+            // Console.WriteLine(result);
+            return result;
+        }
+
+        static int GetTimedeltaInMinutes(int startValue, int endValue) {
+            // Возвращает корректную дельту в минутах между двумя временными значениями
+            int delta;
+            if (endValue > startValue) {
+                delta =  endValue - startValue;
+            } else {
+                delta = (24 * 60 - startValue)  + endValue;
+            }
+            // Console.WriteLine(delta);
+            return delta;
+        }
+
+        static int[,] PathOptimize(int[,] value) {
+            // Оптимизация маршрута из https://stepik.org/lesson/87060/step/12?unit=63457
+            int[,] result = new int[2,2];
+            int verticalAxisWay = 0;
+            int horizontalAxisWay = 0;
+
+            for (int i=0; i< value.GetLength(0); i++) {
+                if (value[i,0] == 1) {
+                    verticalAxisWay+=value[i,1];
+                } else if (value[i,0] == 2) {
+                    horizontalAxisWay+=value[i,1];
+                } else if (value[i,0] == 3) {
+                    verticalAxisWay-=value[i,1];
+                } else if (value[i,0] == 4) {
+                    horizontalAxisWay-=value[i,1];
+                }
+            }
+            result[0,1] = Math.Abs(verticalAxisWay);
+            result[1,1] = Math.Abs(horizontalAxisWay);
+
+            if (verticalAxisWay > 0) {
+                result[0,0] = 1;
+            } else if (verticalAxisWay < 0) {
+                result[0,0] = 3;
+            } else {
+                result[0,0] = 0;
+            }
+
+            if (horizontalAxisWay > 0) {
+                result[1,0] = 2;
+            } else if (horizontalAxisWay < 0) {
+                result[1,0] = 4;
+            } else {
+                result[1,0] = 0;
+            }
+
+            return result;
+        }
+
         static void Main(string[] args)
         {   
+            
+            
+            int rowsCount = Convert.ToInt32(Console.ReadLine());
+            int[] floorsArray = OneDimArrayInput();
+            int hoursCount = 0;
+            for (int i=0; i< floorsArray.Length; i++) {
+                hoursCount+=floorsArray[i];
+            }
+            if (hoursCount % 12 != 0) {
+                Console.WriteLine(hoursCount / 12 + 1);
+            } else {
+                Console.WriteLine(hoursCount / 12);
+            }
+
             // int cycleMin = Convert.ToInt32(Console.ReadLine());
             // int magicNumber = 7;
             // string inputString = Console.ReadLine();
-            int height = Convert.ToInt32(Console.ReadLine().Split(' ')[1]);
+            //int height = Convert.ToInt32(Console.ReadLine().Split(' ')[1]);
             // int arraySize = Convert.ToInt32(Console.ReadLine());
-            int[] numArray = OneDimArrayInput();
-            Console.Write(MinimalRoadSize(numArray, height));
             // Console.Write(string.Join(" ", GetNumArrayUniques(numbers)));
 
         }
