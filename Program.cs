@@ -415,7 +415,7 @@ namespace test_proj
             }
         }
 
-        static int[] OneDimArrayInput(char delimeter = ' ') {
+        static int[] IntOneDimArrayInput(char delimeter = ' ') {
             // Считывание цифр, написанных через delimeter в 1 строку.
             string inputString = Console.ReadLine();
             string[] arrayWords = inputString.Split(' '); 
@@ -552,6 +552,18 @@ namespace test_proj
             return result;
         }
 
+        static string[,] StringTwoDimArrayInput (int n, int m) {
+            // Считывание двумерного массива строк
+            string[,] result = new string[n,m];
+            for (int i=0; i<n; i++) {
+                string[] inputString = Console.ReadLine().Split(' ');
+                for (int j=0; j<m; j++) {
+                    result[i,j] = inputString[j];
+                }
+            }
+
+            return result;
+        }
         static bool IsSymmetricalTwoDimArray(int[,] value) {
             /*
             Проверка двумерного массива на соответствие виду:
@@ -814,29 +826,24 @@ namespace test_proj
             return result;
         }
 
+        static int CountElementInArray(string [,] value, string element) {
+            // Подсчет количества элементов в двумерном массиве
+            int count = 0;
+            for (int i = 0; i<value.GetLength(0); i++) {
+                for (int j = 0; j < value.GetLength(1); j++) {
+                    if (value[i,j] == element) {
+                        count++;
+                    }
+                }
+            }
+            return count;
+        }
+
         static void Main(string[] args)
         {   
             
-            
-            int rowsCount = Convert.ToInt32(Console.ReadLine());
-            int[] floorsArray = OneDimArrayInput();
-            int hoursCount = 0;
-            for (int i=0; i< floorsArray.Length; i++) {
-                hoursCount+=floorsArray[i];
-            }
-            if (hoursCount % 12 != 0) {
-                Console.WriteLine(hoursCount / 12 + 1);
-            } else {
-                Console.WriteLine(hoursCount / 12);
-            }
-
-            // int cycleMin = Convert.ToInt32(Console.ReadLine());
-            // int magicNumber = 7;
-            // string inputString = Console.ReadLine();
-            //int height = Convert.ToInt32(Console.ReadLine().Split(' ')[1]);
-            // int arraySize = Convert.ToInt32(Console.ReadLine());
-            // Console.Write(string.Join(" ", GetNumArrayUniques(numbers)));
-
+            // string targetValue = Console.ReadLine();
+            // int arrayColumnCount = Convert.ToInt32(Console.ReadLine());
         }
             
     }
