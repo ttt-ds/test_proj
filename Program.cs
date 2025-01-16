@@ -826,6 +826,20 @@ namespace test_proj
             return result;
         }
 
+        static int Factorial(int value) {
+            int result = 1;
+            if (value!=0) {
+            }
+            for (int i=1; i<=value; i++) {
+                result*=i;
+            }
+            return result;
+        }
+
+        static double CombinationsNumber(int n, int k) {
+            return (Factorial(n)/(Factorial(k)*Factorial(n-k)));
+        }
+
         static int CountElementInArray(string [,] value, string element) {
             // Подсчет количества элементов в двумерном массиве
             int count = 0;
@@ -839,9 +853,18 @@ namespace test_proj
             return count;
         }
 
+        static int SignFunction(int value) {
+            int result = 0;
+            if (value != 0) {
+                result = value / Math.Abs(value);
+            }
+            return result;
+        }
+
         static void Main(string[] args)
         {   
-            
+            //Console.WriteLine(CombinationsNumber(Convert.ToInt32(Console.ReadLine()), Convert.ToInt32(Console.ReadLine())));
+            Console.WriteLine(Console.ReadLine().Length * Console.ReadLine().Length);
             // string targetValue = Console.ReadLine();
             // int arrayColumnCount = Convert.ToInt32(Console.ReadLine());
         }
